@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Debt Countdown Pro ✨</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="manifest" href="manifest.json" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+      body {
+        background: radial-gradient(
+          circle at top left,
+          #fdfcfb 0%,
+          #e2d1c3 100%
+        );
+        color: #2d3748;
+        font-family: "Anuphan", sans-serif;
+        min-height: 100vh;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+      }
+      .premium-input {
+        background: rgba(255, 255, 255, 0.9);
+        border: 2px solid transparent;
+        transition: all 0.4s ease;
+      }
+      .premium-input:focus {
+        border-color: #805ad5;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(128, 90, 213, 0.1);
+      }
+      .nav-active {
+        background: linear-gradient(135deg, #6b46c1 0%, #805ad5 100%);
+        color: white !important;
+        box-shadow: 0 10px 20px rgba(107, 70, 193, 0.3);
+      }
+      .progress-glow {
+        box-shadow: 0 0 15px rgba(128, 90, 213, 0.4);
+        background: linear-gradient(90deg, #6b46c1, #b794f4);
+        transition: width 1.5s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+      }
+      @keyframes floating {
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+        100% {
+          transform: translateY(0px);
+        }
+      }
+      .float-animation {
+        animation: floating 3s ease-in-out infinite;
+      }
+      .hidden {
+        display: none;
+      }
+      .page-transition {
+        animation: fadeIn 0.5s ease-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.98);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body class="p-4 flex justify-center items-start pb-48">
+    <div class="max-w-md w-full">
+      <header class="text-center mb-8 pt-6">
+        <div
+          class="inline-block p-3 bg-white/50 rounded-3xl mb-3 shadow-sm border border-white/80"
+        >
+          <i
+            class="fa-solid fa-rocket text-purple-600 text-2xl float-animation"
+          ></i>
+        </div>
+        <h1 class="text-3xl font-bold text-gray-800 tracking-tight">
+          Debt Countdown
+        </h1>
+        <p class="text-gray-500 text-sm font-medium mt-1">
+          ระบบบันทึกและติดตามการใช้หนี้✨
+        </p>
+      </header>
+
+      <div id="page-input" class="page-transition">
+        <div class="glass-card p-7 rounded-[2.5rem] space-y-6">
+          <div
+            id="remaining-info"
+            class="hidden animate-pop bg-purple-600 p-4 rounded-3xl text-white text-center shadow-lg shadow-purple-200"
+          >
+            <p
+              class="text-[10px] font-bold uppercase tracking-widest opacity-80"
+            >
+              คงเหลือที่ต้องจ่ายอีก
+            </p>
+            <h3 id="remaining-amount-display" class="text-2xl font-black">
+              ฿ 0
+            </h3>
+          </div>
+
+          <div class="space-y-1">
+            <label
+              class="text-xs font-bold text-gray-400 ml-2 uppercase tracking-wider"
+              >📅 วันที่บันทึก</label
+            >
+            <input
+              type="date"
+              id="debt-date"
+              class="premium-input w-full p-4 rounded-2xl text-base font-bold text-gray-600 outline-none"
+            />
+          </div>
+
+          <div class="space-y-1">
+            <label
+              class="text-xs font-bold text-gray-400 ml-2 uppercase tracking-wider"
+              >📝 รายการหนี้</label
+            >
+            <div class="relative">
+              <select
+                id="debt-name-select"
+                class="premium-input w-full p-4 rounded-2xl text-base font-bold text-gray-700 appearance-none outline-none cursor-pointer"
+                onchange="handleDebtSelection()"
+              >
+                <option value="">-- เลือกรายการ --</option>
+                <option value="Umay+พ่อ">💳 Umay+พ่อ</option>
+                <option value="Umay+สุ">💳 Umay+สุ</option>
+                <option value="ไทยประกันสุ">🛡️ ไทยประกันสุ</option>
+                <option value="ไทยประกันปุ้ย">🛡️ ไทยประกันปุ้ย</option>
+                <option value="ไทยประกันพ่อ">🛡️ ไทยประกันพ่อ</option>
+                <option value="ค่าโทรศัพท์สุ">📱 ค่าโทรศัพท์สุ</option>
+                <option value="ค่าโทรศัพท์ดา">📱 ค่าโทรศัพท์ดา</option>
+                <option value="ค่าน้ำ">💧 ค่าน้ำ</option>
+                <option value="ค่าไฟ">⚡ ค่าไฟ</option>
+                <option value="ค่าเน็ตบ้าน3bb">🌐 ค่าเน็ตบ้าน 3bb</option>
+                <option value="ค่าเน็ตมือถือสุ">📱 เน็ตมือถือสุ</option>
+                <option value="ค่าเน็ตมือถือปุ้ย">📱 เน็ตมือถือปุ้ย</option>
+                <option value="ค่าเน็ตมือถือพ่อ">📱 เน็ตมือถือพ่อ</option>
+                <option value="ออมสิน(สินเชื่อบ้าน)">🏠 ออมสิน (บ้าน)</option>
+                <option value="ออมสิน(เครดิตสุ)">💳 ออมสิน (สุ)</option>
+                <option value="งวดรถvespa">🛵 งวดรถ Vespa</option>
+                <option value="อื่นๆ">✨ อื่นๆ (ระบุเอง)</option>
+              </select>
+              <i
+                class="fa-solid fa-chevron-down absolute right-5 top-5 text-gray-300 pointer-events-none"
+              ></i>
+            </div>
+            <input
+              type="text"
+              id="debt-name-other"
+              class="premium-input w-full p-4 rounded-2xl text-base font-bold text-gray-600 outline-none hidden mt-2 shadow-inner"
+              placeholder="ระบุชื่อรายการ..."
+              oninput="handleOtherNameInput(this.value)"
+            />
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="space-y-1">
+              <label class="text-xs font-bold text-gray-400 ml-2 uppercase"
+                >💰 ยอดเต็ม</label
+              >
+              <input
+                type="number"
+                id="full-amount"
+                class="premium-input w-full p-4 rounded-2xl text-xl font-bold text-center text-purple-600"
+                placeholder="0"
+                inputmode="decimal"
+              />
+            </div>
+            <div class="space-y-1">
+              <label class="text-xs font-bold text-emerald-500 ml-2 uppercase"
+                >💵 จ่ายครั้งนี้</label
+              >
+              <input
+                type="number"
+                id="paid-amount"
+                class="premium-input w-full p-4 rounded-2xl text-xl font-bold text-center text-emerald-600 border-emerald-100"
+                placeholder="0"
+                inputmode="decimal"
+              />
+            </div>
+          </div>
+
+          <div class="space-y-1">
+            <label
+              class="text-xs font-bold text-gray-400 ml-2 uppercase tracking-wider"
+              >🏦 ช่องทางจ่าย</label
+            >
+            <div class="relative">
+              <select
+                id="source-select"
+                class="premium-input w-full p-4 rounded-2xl text-base font-bold text-gray-700 appearance-none outline-none cursor-pointer"
+                onchange="toggleOtherSource()"
+              >
+                <option value="เงินสด">💵 เงินสด</option>
+                <option value="กสิกร">🟢 กสิกรไทย (K-Bank)</option>
+                <option value="ไทยพาณิชย์">🟣 ไทยพาณิชย์ (SCB)</option>
+                <option value="กรุงเทพ">🔵 กรุงเทพ (BBL)</option>
+                <option value="กรุงไทย">🔵 กรุงไทย (KTB)</option>
+                <option value="กรุงศรี">🟡 กรุงศรี (BAY)</option>
+                <option value="ออมสิน">🔴 ออมสิน (GSB)</option>
+                <option value="อื่นๆ">✨ อื่นๆ (ระบุเอง)</option>
+              </select>
+              <i
+                class="fa-solid fa-chevron-down absolute right-5 top-5 text-gray-300 pointer-events-none"
+              ></i>
+            </div>
+            <input
+              type="text"
+              id="source-other"
+              class="premium-input w-full p-4 rounded-2xl text-base font-bold text-gray-600 outline-none hidden mt-2"
+              placeholder="ระบุธนาคาร..."
+            />
+          </div>
+
+          <button
+            onclick="saveData()"
+            id="btnSave"
+            class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-5 rounded-[2rem] font-bold text-lg shadow-lg hover:shadow-purple-200 active:scale-95 transition-all mt-4"
+          >
+            <i class="fa-solid fa-paper-plane mr-2"></i> บันทึกรายการ
+          </button>
+        </div>
+      </div>
+
+      <div id="page-summary" class="hidden page-transition">
+        <div class="glass-card p-4 rounded-[2rem] mb-6">
+          <select
+            id="debt-filter"
+            onchange="calculateAndRender()"
+            class="w-full p-3 bg-white/50 rounded-xl outline-none font-bold text-center text-purple-700 border-none appearance-none"
+          >
+            <option value="all">📊 สรุปหนี้รวมทั้งหมด</option>
+            <option value="Umay+พ่อ">Umay+พ่อ</option>
+            <option value="Umay+สุ">Umay+สุ</option>
+            <option value="ไทยประกันสุ">ไทยประกันสุ</option>
+            <option value="ไทยประกันปุ้ย">ไทยประกันปุ้ย</option>
+            <option value="ไทยประกันพ่อ">ไทยประกันพ่อ</option>
+            <option value="ค่าโทรศัพท์สุ">ค่าโทรศัพท์สุ</option>
+            <option value="ค่าโทรศัพท์ดา">ค่าโทรศัพท์ดา</option>
+            <option value="ค่าน้ำ">ค่าน้ำ</option>
+            <option value="ค่าไฟ">ค่าไฟ</option>
+            <option value="ค่าเน็ตบ้าน3bb">ค่าเน็ตบ้าน 3bb</option>
+            <option value="งวดรถvespa">งวดรถ Vespa</option>
+          </select>
+        </div>
+
+        <div
+          class="glass-card p-8 rounded-[3rem] text-center mb-8 relative overflow-hidden"
+        >
+          <div
+            class="absolute -top-10 -right-10 w-32 h-32 bg-purple-100 rounded-full blur-3xl opacity-50"
+          ></div>
+          <p
+            class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2"
+            id="label-net"
+          >
+            ยอดคงค้างทั้งหมด
+          </p>
+          <h2
+            id="netDebt"
+            class="text-5xl font-bold text-gray-800 mb-6 tracking-tighter"
+          >
+            ฿ 0
+          </h2>
+
+          <div class="space-y-4">
+            <div class="flex justify-between items-end px-1">
+              <span
+                class="text-[10px] font-bold text-purple-600 bg-purple-50 px-2 py-1 rounded-md"
+                >PROGRESS</span
+              >
+              <span
+                id="progressText"
+                class="text-2xl font-black text-purple-700"
+                >0%</span
+              >
+            </div>
+            <div
+              class="w-full bg-gray-100/50 rounded-full h-5 p-1.5 shadow-inner"
+            >
+              <div
+                id="progressBar"
+                class="progress-glow h-full rounded-full"
+                style="width: 0%"
+              ></div>
+            </div>
+            <p id="emoji-status" class="text-2xl">🐢</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mb-8">
+          <div
+            class="glass-card p-5 rounded-[2rem] text-center border-b-4 border-b-gray-200"
+          >
+            <p class="text-[10px] font-bold text-gray-400 uppercase mb-1">
+              หนี้ตั้งต้น
+            </p>
+            <p id="totalInitial" class="text-xl font-bold text-gray-700">฿ 0</p>
+          </div>
+          <div
+            class="glass-card p-5 rounded-[2rem] text-center border-b-4 border-b-emerald-200"
+          >
+            <p class="text-[10px] font-bold text-emerald-400 uppercase mb-1">
+              จ่ายปิดไปแล้ว
+            </p>
+            <p id="totalPaid" class="text-xl font-bold text-emerald-600">฿ 0</p>
+          </div>
+        </div>
+
+        <div class="space-y-4" id="debtHistory"></div>
+      </div>
+
+      <div
+        id="editModal"
+        class="fixed inset-0 bg-gray-900/60 backdrop-blur-md hidden z-[100] flex justify-center items-center p-6"
+      >
+        <div
+          class="glass-card w-full max-w-sm p-8 rounded-[2.5rem] space-y-5 page-transition shadow-2xl"
+        >
+          <h3 class="text-xl font-bold text-purple-700 text-center">
+            <i class="fa-solid fa-edit mr-2"></i> แก้ไขข้อมูล
+          </h3>
+          <input type="hidden" id="editRow" />
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <label class="text-[10px] font-bold text-gray-400 ml-2 uppercase"
+                >วันที่จ่าย</label
+              >
+              <input
+                type="date"
+                id="editDate"
+                class="premium-input w-full p-4 rounded-xl text-base font-bold shadow-inner"
+              />
+            </div>
+            <div class="space-y-1">
+              <label class="text-[10px] font-bold text-gray-400 ml-2 uppercase"
+                >ชื่อรายการ</label
+              >
+              <input
+                type="text"
+                id="editName"
+                class="premium-input w-full p-4 rounded-xl text-base font-bold shadow-inner"
+                placeholder="ชื่อรายการ"
+              />
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="space-y-1">
+                <label
+                  class="text-[10px] font-bold text-gray-400 ml-2 uppercase"
+                  >ยอดเต็ม</label
+                >
+                <input
+                  type="number"
+                  id="editFull"
+                  class="premium-input w-full p-4 rounded-xl text-base font-bold text-purple-600 shadow-inner"
+                  placeholder="ยอดเต็ม"
+                />
+              </div>
+              <div class="space-y-1">
+                <label
+                  class="text-[10px] font-bold text-emerald-500 ml-2 uppercase"
+                  >ที่จ่าย</label
+                >
+                <input
+                  type="number"
+                  id="editPaid"
+                  class="premium-input w-full p-4 rounded-xl text-base font-bold text-emerald-600 shadow-inner"
+                  placeholder="ที่จ่าย"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="flex gap-4 pt-2">
+            <button
+              onclick="closeEdit()"
+              class="flex-1 py-4 rounded-2xl font-bold text-gray-400 bg-gray-100 active-tap"
+            >
+              ยกเลิก
+            </button>
+            <button
+              onclick="submitEdit()"
+              class="flex-1 py-4 rounded-2xl font-bold text-white bg-purple-600 shadow-lg active-tap"
+            >
+              บันทึก
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <footer class="text-center mt-12 mb-8">
+        <p
+          class="text-[10px] font-bold text-gray-400 uppercase tracking-widest"
+        >
+          © 2026 SUKANDAKIANGKAIโ
+        </p>
+      </footer>
+
+      <nav
+        class="fixed bottom-8 left-1/2 -translate-x-1/2 w-[85%] max-w-sm glass-card rounded-[2.5rem] p-3 flex justify-around items-center shadow-2xl z-50"
+      >
+        <button
+          onclick="switchPage('input')"
+          id="nav-input"
+          class="w-14 h-14 rounded-2xl transition-all duration-500 nav-active flex items-center justify-center"
+        >
+          <i class="fa-solid fa-plus text-xl"></i>
+        </button>
+        <button
+          onclick="switchPage('summary')"
+          id="nav-summary"
+          class="w-14 h-14 rounded-2xl transition-all duration-500 text-gray-300 flex items-center justify-center"
+        >
+          <i class="fa-solid fa-chart-pie text-xl"></i>
+        </button>
+      </nav>
+    </div>
+
+    <script>
+      const WEB_APP_URL =
+        "https://script.google.com/macros/s/AKfycbz9pBSfaJGM744SLru6Qb9nWaTXv_w2jRWTlAImw66FL45nkbwrRxxPfmhfKCD-2Ay_/exec";
+      let allHistoryData = [];
+
+      function initApp() {
+        const now = new Date();
+        document.getElementById("debt-date").value = now
+          .toISOString()
+          .split("T")[0];
+        updateDashboard();
+      }
+
+      function switchPage(page) {
+        document
+          .getElementById("page-input")
+          .classList.toggle("hidden", page !== "input");
+        document
+          .getElementById("page-summary")
+          .classList.toggle("hidden", page !== "summary");
+        document
+          .getElementById("nav-input")
+          .classList.toggle("nav-active", page === "input");
+        document
+          .getElementById("nav-summary")
+          .classList.toggle("nav-active", page === "summary");
+        if (page === "summary") updateDashboard();
+      }
+
+      function handleDebtSelection() {
+        const select = document.getElementById("debt-name-select");
+        const otherInput = document.getElementById("debt-name-other");
+        const fullAmountInput = document.getElementById("full-amount");
+
+        if (select.value === "อื่นๆ") {
+          otherInput.classList.remove("hidden");
+          otherInput.focus();
+          fullAmountInput.value = "";
+          document.getElementById("remaining-info").classList.add("hidden");
+        } else if (select.value === "") {
+          otherInput.classList.add("hidden");
+          fullAmountInput.value = "";
+          document.getElementById("remaining-info").classList.add("hidden");
+        } else {
+          otherInput.classList.add("hidden");
+          const cleanName = select.value.replace(/^[^\s]+\s/, "").trim();
+          autoFillAndCalculate(cleanName);
+        }
+      }
+
+      function handleOtherNameInput(val) {
+        if (val.length > 2) autoFillAndCalculate(val.trim());
+      }
+
+      function autoFillAndCalculate(debtName) {
+        const fullAmountInput = document.getElementById("full-amount");
+        const remainingBox = document.getElementById("remaining-info");
+        const remainingDisplay = document.getElementById(
+          "remaining-amount-display",
+        );
+
+        const historyOfThisDebt = allHistoryData.filter((item) =>
+          item.name.includes(debtName),
+        );
+
+        if (historyOfThisDebt.length > 0) {
+          const latestWithInitial = historyOfThisDebt.find(
+            (item) => Number(item.initial) > 0,
+          );
+          const initialVal = latestWithInitial
+            ? Number(latestWithInitial.initial)
+            : 0;
+          const totalPaidOfThisDebt = historyOfThisDebt.reduce(
+            (sum, item) => sum + Number(item.paid || 0),
+            0,
+          );
+          const remaining = initialVal - totalPaidOfThisDebt;
+
+          fullAmountInput.value = initialVal;
+          remainingBox.classList.remove("hidden");
+          remainingDisplay.innerText = `฿ ${remaining.toLocaleString()}`;
+        } else {
+          fullAmountInput.value = "";
+          remainingBox.classList.add("hidden");
+        }
+      }
+
+      function toggleOtherSource() {
+        const select = document.getElementById("source-select");
+        const otherInput = document.getElementById("source-other");
+        if (select.value === "อื่นๆ") {
+          otherInput.classList.remove("hidden");
+          otherInput.focus();
+        } else {
+          otherInput.classList.add("hidden");
+        }
+      }
+
+      async function updateDashboard() {
+        try {
+          const res = await fetch(`${WEB_APP_URL}?action=getSummary`);
+          const data = await res.json();
+          allHistoryData = data.history || [];
+          calculateAndRender();
+        } catch (e) {
+          console.log("Fetch Error");
+        }
+      }
+
+      function calculateAndRender() {
+        const selectedDebt = document.getElementById("debt-filter").value;
+        let filtered =
+          selectedDebt === "all"
+            ? allHistoryData
+            : allHistoryData.filter((item) => item.name.includes(selectedDebt));
+
+        const debtGroups = {};
+        let totalPaid = 0;
+        allHistoryData.forEach((item) => {
+          if (!debtGroups[item.name]) debtGroups[item.name] = 0;
+          if (Number(item.initial) > 0)
+            debtGroups[item.name] = Number(item.initial);
+          totalPaid += Number(item.paid || 0);
+        });
+
+        let totalInitial = 0;
+        if (selectedDebt === "all") {
+          for (let key in debtGroups) totalInitial += debtGroups[key];
+        } else {
+          const specificDebt = allHistoryData.filter((item) =>
+            item.name.includes(selectedDebt),
+          );
+          totalInitial =
+            specificDebt.length > 0
+              ? Number(
+                  specificDebt.find((i) => Number(i.initial) > 0)?.initial || 0,
+                )
+              : 0;
+          totalPaid = specificDebt.reduce((s, i) => s + Number(i.paid || 0), 0);
+        }
+
+        const net = totalInitial - totalPaid;
+        const percent =
+          totalInitial > 0
+            ? Math.min(Math.round((totalPaid / totalInitial) * 100), 100)
+            : 0;
+
+        document.getElementById("netDebt").innerText =
+          `฿ ${net.toLocaleString()}`;
+        document.getElementById("totalInitial").innerText =
+          `฿ ${totalInitial.toLocaleString()}`;
+        document.getElementById("totalPaid").innerText =
+          `฿ ${totalPaid.toLocaleString()}`;
+        document.getElementById("progressText").innerText = `${percent}%`;
+        document.getElementById("progressBar").style.width = `${percent}%`;
+
+        const emoji = document.getElementById("emoji-status");
+        if (percent === 0) emoji.innerText = "🐢";
+        else if (percent < 50) emoji.innerText = "🚶";
+        else if (percent < 100) emoji.innerText = "🏃";
+        else {
+          emoji.innerText = "🎉";
+          if (percent === 100)
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        }
+
+        renderHistory(filtered);
+      }
+
+      function renderHistory(history) {
+        const list = document.getElementById("debtHistory");
+        if (!history.length) {
+          list.innerHTML = `<div class='p-10 text-center text-gray-300 font-bold text-xs animate-pulse'>--- ไม่มีข้อมูล ---</div>`;
+          return;
+        }
+        list.innerHTML = history
+          .map(
+            (item) => `
+                <div class="glass-card p-5 rounded-[2rem] flex justify-between items-center animate-pop mb-4 group hover:scale-[1.02] transition-transform">
+                    <div class="space-y-1">
+                        <p class="text-[9px] font-bold text-purple-500 uppercase">${item.date}</p>
+                        <p class="text-base font-bold text-gray-700">${item.name}</p>
+                        <div class="flex gap-2">
+                             <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">จ่าย ฿${Number(item.paid).toLocaleString()}</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick='openEdit(${JSON.stringify(item)})' class="w-10 h-10 flex items-center justify-center bg-purple-50 text-purple-600 rounded-xl active:scale-90 transition-all"><i class="fa-solid fa-pen-nib text-xs"></i></button>
+                        <button onclick="deleteItem(${item.row})" class="w-10 h-10 flex items-center justify-center bg-red-50 text-red-400 rounded-xl active-tap"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                    </div>
+                </div>
+            `,
+          )
+          .join("");
+      }
+
+      function openEdit(item) {
+        document.getElementById("editRow").value = item.row;
+        document.getElementById("editName").value = item.name;
+        document.getElementById("editFull").value = item.initial;
+        document.getElementById("editPaid").value = item.paid;
+        if (item.date) {
+          const parts = item.date.split("/");
+          const formattedDate = `20${parts[2]}-${parts[1]}-${parts[0]}`;
+          document.getElementById("editDate").value = formattedDate;
+        }
+        document.getElementById("editModal").classList.remove("hidden");
+      }
+
+      function closeEdit() {
+        document.getElementById("editModal").classList.add("hidden");
+      }
+
+      async function submitEdit() {
+        const payload = {
+          action: "update",
+          row: document.getElementById("editRow").value,
+          date: document.getElementById("editDate").value,
+          name: document.getElementById("editName").value,
+          initial: document.getElementById("editFull").value,
+          paid: document.getElementById("editPaid").value,
+        };
+        try {
+          await fetch(WEB_APP_URL, {
+            method: "POST",
+            body: JSON.stringify(payload),
+          });
+          closeEdit();
+          updateDashboard();
+          alert("แก้ไขข้อมูลเรียบร้อยแล้ว ✨");
+        } catch (e) {
+          alert("เกิดข้อผิดพลาด");
+        }
+      }
+
+      async function deleteItem(row) {
+        if (!confirm("ลบรายการนี้ใช่ไหม?")) return;
+        await fetch(WEB_APP_URL, {
+          method: "POST",
+          body: JSON.stringify({ action: "delete", row: row }),
+        });
+        updateDashboard();
+      }
+
+      async function saveData() {
+        const btn = document.getElementById("btnSave");
+        const select = document.getElementById("debt-name-select");
+        const otherInput = document.getElementById("debt-name-other");
+        const name = select.value === "อื่นๆ" ? otherInput.value : select.value;
+        const paid = document.getElementById("paid-amount").value;
+        if (!name || !paid) return alert("กรุณาระบุข้อมูลให้ครบจ้า");
+        btn.disabled = true;
+        btn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin mr-2"></i> กำลังบันทึก...`;
+        const payload = {
+          action: "insert",
+          date: document.getElementById("debt-date").value,
+          name,
+          initial: document.getElementById("full-amount").value || 0,
+          paid,
+          source: document.getElementById("source-select").value,
+        };
+        try {
+          await fetch(WEB_APP_URL, {
+            method: "POST",
+            body: JSON.stringify(payload),
+          });
+          confetti({ particleCount: 150, velocity: 30, spread: 360 });
+          alert("จดบันทึกสำเร็จ! สู้ๆ ✨");
+          location.reload();
+        } catch (err) {
+          alert("เกิดข้อผิดพลาด");
+          btn.disabled = false;
+          btn.innerHTML = "บันทึกรายการ";
+        }
+      }
+
+      window.onload = initApp;
+    </script>
+  </body>
+</html>
