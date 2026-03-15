@@ -1,12 +1,12 @@
 {
-  "short_name": "DebtTracker",
-  "name": "Debt Countdown Pro",
+  "short_name": "DebtTrack",
+  "name": "Debt Track Pro",
   "description": "ระบบบันทึกและติดตามการใช้หนี้",
-  "start_url": "./index.html",
+  "start_url": ".",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#fdfcfb",
-  "theme_color": "#6b46c1",
+  "background_color": "#f0f4f8",
+  "theme_color": "#2b6cb0",
   "icons": [
     {
       "src": "cash.png",
@@ -18,7 +18,7 @@
       "src": "cash.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }
