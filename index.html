@@ -266,6 +266,11 @@
             <option value="ค่าน้ำ">ค่าน้ำ</option>
             <option value="ค่าไฟ">ค่าไฟ</option>
             <option value="ค่าเน็ตบ้าน3bb">ค่าเน็ตบ้าน 3bb</option>
+            <option value="ค่าเน็ตมือถือสุ">ค่าเน็ตมือถือสุ</option>
+            <option value="ค่าเน็ตมือถือปุ้ย">ค่าเน็ตมือถือปุ้ย</option>
+            <option value="ค่าเน็ตมือถือพ่อ">ค่าเน็ตมือถือพ่อ</option>
+            <option value="ออมสิน(สินเชื่อบ้าน)">ออมสิน (บ้าน)</option>
+            <option value="ออมสิน(เครดิตสุ)">ออมสิน (สุ)</option>
             <option value="งวดรถvespa">งวดรถ Vespa</option>
           </select>
         </div>
@@ -502,7 +507,10 @@
         if (selectedDebt === "all") {
           for (let key in debtGroups) totalInitial += debtGroups[key];
           // รวมยอดจ่ายจริงทั้งหมดในชีทเพื่อความแม่นยำ
-          totalPaid = allHistoryData.reduce((s, i) => s + Number(i.paid || 0), 0);
+          totalPaid = allHistoryData.reduce(
+            (s, i) => s + Number(i.paid || 0),
+            0,
+          );
         } else {
           const specificDebt = allHistoryData.filter((item) =>
             item.name.includes(selectedDebt),
