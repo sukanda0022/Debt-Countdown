@@ -20,7 +20,6 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
       body {
-        /* ปรับพื้นหลังเป็นโทนฟ้านุ่มนวล */
         background: radial-gradient(
           circle at top left,
           #f0f4f8 0%,
@@ -43,13 +42,11 @@
         transition: all 0.4s ease;
       }
       .premium-input:focus {
-        /* เปลี่ยนสีโฟกัสเป็นน้ำเงิน */
         border-color: #3182ce;
         transform: translateY(-2px);
         box-shadow: 0 10px 20px rgba(49, 130, 206, 0.1);
       }
       .nav-active {
-        /* Gradient น้ำเงินเข้ม */
         background: linear-gradient(135deg, #2b6cb0 0%, #4299e1 100%);
         color: white !important;
         box-shadow: 0 10px 20px rgba(43, 108, 176, 0.3);
@@ -341,6 +338,83 @@
         <div class="space-y-4" id="debtHistory"></div>
       </div>
 
+      <div
+        id="editModal"
+        class="fixed inset-0 bg-gray-900/60 backdrop-blur-md hidden z-[100] flex justify-center items-center p-6"
+      >
+        <div
+          class="glass-card w-full max-w-sm p-8 rounded-[2.5rem] space-y-5 page-transition shadow-2xl"
+        >
+          <h3 class="text-xl font-bold text-blue-700 text-center">
+            <i class="fa-solid fa-edit mr-2"></i> แก้ไขข้อมูล
+          </h3>
+          <input type="hidden" id="editRow" />
+          <div class="space-y-4">
+            <div class="space-y-1">
+              <label class="text-[10px] font-bold text-slate-400 ml-2 uppercase"
+                >วันที่จ่าย</label
+              >
+              <input
+                type="date"
+                id="editDate"
+                class="premium-input w-full p-4 rounded-xl text-base font-bold shadow-inner"
+              />
+            </div>
+            <div class="space-y-1">
+              <label class="text-[10px] font-bold text-slate-400 ml-2 uppercase"
+                >ชื่อรายการ</label
+              >
+              <input
+                type="text"
+                id="editName"
+                class="premium-input w-full p-4 rounded-xl text-base font-bold shadow-inner"
+                placeholder="ชื่อรายการ"
+              />
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="space-y-1">
+                <label
+                  class="text-[10px] font-bold text-slate-400 ml-2 uppercase"
+                  >ยอดเต็ม</label
+                >
+                <input
+                  type="number"
+                  id="editFull"
+                  class="premium-input w-full p-4 rounded-xl text-base font-bold text-blue-600 shadow-inner"
+                  placeholder="ยอดเต็ม"
+                />
+              </div>
+              <div class="space-y-1">
+                <label
+                  class="text-[10px] font-bold text-emerald-500 ml-2 uppercase"
+                  >ที่จ่าย</label
+                >
+                <input
+                  type="number"
+                  id="editPaid"
+                  class="premium-input w-full p-4 rounded-xl text-base font-bold text-emerald-600 shadow-inner"
+                  placeholder="ที่จ่าย"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="flex gap-4 pt-2">
+            <button
+              onclick="closeEdit()"
+              class="flex-1 py-4 rounded-2xl font-bold text-gray-400 bg-gray-100 active-tap"
+            >
+              ยกเลิก
+            </button>
+            <button
+              onclick="submitEdit()"
+              class="flex-1 py-4 rounded-2xl font-bold text-white bg-blue-600 shadow-lg active-tap"
+            >
+              บันทึก
+            </button>
+          </div>
+        </div>
+      </div>
+
       <footer class="text-center mt-12 mb-8">
         <p
           class="text-[10px] font-bold text-slate-400 uppercase tracking-widest"
@@ -480,33 +554,31 @@
 
       function calculateAndRender() {
         const selectedDebt = document.getElementById("debt-filter").value;
-        const labelNet = document.getElementById("label-net"); // ตัวแปรสำหรับเปลี่ยนหัวข้อ
+        const labelNet = document.getElementById("label-net");
 
         let filtered =
           selectedDebt === "all"
             ? allHistoryData
             : allHistoryData.filter((item) => item.name.includes(selectedDebt));
 
-        // --- ส่วนที่เพิ่มใหม่: เปลี่ยนชื่อหัวข้อตามที่เลือก ---
         if (selectedDebt === "all") {
-          labelNet.innerText = "ยอดคงค้างทั้งหมด";
+          labelNet.innerText = "ยอดคงค้างรวมทั้งหมด";
         } else {
           labelNet.innerText = "ยอดคงค้าง: " + selectedDebt;
         }
 
         const debtGroups = {};
-        let totalPaid = 0;
         allHistoryData.forEach((item) => {
           if (!debtGroups[item.name]) debtGroups[item.name] = 0;
           if (Number(item.initial) > 0)
             debtGroups[item.name] = Number(item.initial);
-          totalPaid += Number(item.paid || 0);
         });
 
         let totalInitial = 0;
+        let totalPaid = 0;
+
         if (selectedDebt === "all") {
           for (let key in debtGroups) totalInitial += debtGroups[key];
-          // รวมยอดจ่ายจริงทั้งหมดในชีทเพื่อความแม่นยำ
           totalPaid = allHistoryData.reduce(
             (s, i) => s + Number(i.paid || 0),
             0,
@@ -578,6 +650,7 @@
           .join("");
       }
 
+      // ฟังก์ชันเปิดหน้าต่างแก้ไข
       function openEdit(item) {
         document.getElementById("editRow").value = item.row;
         document.getElementById("editName").value = item.name;
