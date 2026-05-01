@@ -12,7 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
       * { box-sizing: border-box; margin: 0; padding: 0; }
- 
+
       body {
         background: #eef2f7;
         color: #2d3748;
@@ -21,7 +21,7 @@
         padding-bottom: 120px;
         -webkit-tap-highlight-color: transparent;
       }
- 
+
       /* subtle dot pattern overlay */
       body::before {
         content: '';
@@ -33,7 +33,7 @@
         pointer-events: none;
         z-index: 0;
       }
- 
+
       .app-wrapper {
         max-width: 430px;
         margin: 0 auto;
@@ -41,7 +41,7 @@
         position: relative;
         z-index: 1;
       }
- 
+
       /* ── HEADER ── */
       header {
         text-align: center;
@@ -89,7 +89,7 @@
         margin-top: 3px;
         font-weight: 400;
       }
- 
+
       /* ── CARD ── */
       .card {
         background: #ffffff;
@@ -99,7 +99,7 @@
         box-shadow: 8px 8px 24px rgba(0,0,0,0.06), -2px -2px 8px rgba(255,255,255,0.9);
         border: 1px solid rgba(255,255,255,0.8);
       }
- 
+
       /* ── FORM ── */
       .field-group { margin-bottom: 18px; }
       .field-label {
@@ -113,7 +113,7 @@
         margin-left: 2px;
       }
       .field-label.green { color: #10b981; }
- 
+
       .premium-input {
         width: 100%;
         background: #f4f8fc;
@@ -134,7 +134,7 @@
         box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
       }
       .premium-input::placeholder { color: #b0c0d0; font-weight: 400; }
- 
+
       .amount-input {
         font-size: 30px;
         font-weight: 500;
@@ -144,7 +144,7 @@
         letter-spacing: -0.5px;
       }
       .amount-input::placeholder { color: rgba(16,185,129,0.25); }
- 
+
       .select-wrap { position: relative; }
       .select-wrap .chevron {
         position: absolute; right: 16px; top: 50%;
@@ -152,7 +152,7 @@
         color: #b0c0d0; font-size: 11px;
         pointer-events: none;
       }
- 
+
       /* ── SAVE BUTTON ── */
       .btn-save {
         width: 100%;
@@ -173,7 +173,7 @@
       .btn-save:hover { transform: translateY(-1px); box-shadow: 0 12px 28px rgba(59,130,246,0.4); }
       .btn-save:active { transform: scale(0.98); }
       .btn-save:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
- 
+
       /* ── SUMMARY ── */
       .filter-wrap { margin-bottom: 14px; position: relative; }
       .filter-select {
@@ -195,7 +195,7 @@
       }
       .filter-select:focus { border-color: #3b82f6; }
       .filter-select option { color: #2d3748; font-weight: 400; }
- 
+
       /* Hero card */
       .hero-card {
         background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 60%, #60a5fa 100%);
@@ -248,7 +248,7 @@
         padding: 4px 14px;
         border-radius: 20px;
       }
- 
+
       /* Stats row */
       .stats-row {
         display: grid;
@@ -289,7 +289,7 @@
       }
       .stat-amount.blue { color: #3b82f6; }
       .stat-amount.purple { color: #8b5cf6; }
- 
+
       /* Section label */
       .section-divider {
         display: flex;
@@ -311,7 +311,7 @@
         height: 1px;
         background: #dde6f0;
       }
- 
+
       /* History items */
       .history-item {
         background: #fff;
@@ -357,7 +357,7 @@
       .badge-teal   { background:#f0fdfa; color:#14b8a6; border-color:#99f6e4; }
       .badge-amber  { background:#fffbeb; color:#d97706; border-color:#fde68a; }
       .badge-gray   { background:#f8fafc; color:#64748b; border-color:#e2e8f0; }
- 
+
       /* ── SKELETON ── */
       .skeleton-wrap { display: flex; flex-direction: column; gap: 10px; }
       .skeleton-item {
@@ -385,7 +385,7 @@
       .skel-badge { width: 80px;  height: 22px; border-radius: 8px; }
       .skel-btns  { display: flex; gap: 7px; }
       .skel-btn   { width: 36px; height: 36px; border-radius: 12px; }
- 
+
       .history-actions { display: flex; gap: 7px; }
       .action-btn {
         width: 36px; height: 36px;
@@ -400,7 +400,7 @@
       .btn-edit:hover { background: #dbeafe; }
       .btn-delete { background: #fff1f2; color: #f87171; }
       .btn-delete:hover { background: #fee2e2; }
- 
+
       /* Empty state */
       .empty-state {
         text-align: center;
@@ -409,7 +409,7 @@
         font-size: 13px;
       }
       .empty-state i { font-size: 32px; margin-bottom: 10px; display: block; opacity: 0.4; }
- 
+
       /* ── MODAL / Bottom sheet ── */
       .modal-overlay {
         position: fixed; inset: 0;
@@ -466,7 +466,7 @@
         transition: all 0.15s;
       }
       .btn-confirm:active { transform: scale(0.97); }
- 
+
       /* ── NAVBAR ── */
       .navbar {
         position: fixed;
@@ -506,7 +506,7 @@
         color: #fff;
         box-shadow: 0 6px 18px rgba(59,130,246,0.35);
       }
- 
+
       /* transitions */
       .page { animation: fadeUp 0.3s ease; }
       .hidden { display: none !important; }
@@ -514,7 +514,7 @@
         from { opacity: 0; transform: translateY(8px); }
         to { opacity: 1; transform: translateY(0); }
       }
- 
+
       footer {
         text-align: center;
         padding: 20px 0 4px;
@@ -526,7 +526,7 @@
         letter-spacing: 0.12em;
         text-transform: uppercase;
       }
- 
+
       /* ── CALENDAR ── */
       .cal-month-nav {
         display: flex;
@@ -639,7 +639,7 @@
         margin-top: 1px;
         line-height: 1;
       }
- 
+
       /* Day detail panel */
       .cal-detail {
         background: #fff;
@@ -668,7 +668,7 @@
       .cal-detail-item:last-child { border-bottom: none; }
       .cal-detail-name { font-size: 14px; color: #1e3a5f; }
       .cal-detail-amt { font-size: 14px; font-weight: 500; color: #10b981; }
- 
+
       /* ── SUCCESS ANIMATION ── */
       .btn-save.success {
         background: linear-gradient(135deg, #059669 0%, #34d399 100%) !important;
@@ -681,7 +681,7 @@
         70%  { transform: scale(0.97); }
         100% { transform: scale(1); }
       }
- 
+
       /* toast popup */
       .toast {
         position: fixed;
@@ -723,7 +723,7 @@
   </head>
   <body>
     <div class="app-wrapper">
- 
+
       <header>
         <div class="header-icon-wrap">
           <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -737,50 +737,50 @@
                 <stop offset="100%" stop-color="#f472b6"/>
               </radialGradient>
             </defs>
- 
+
             <!-- Shadow -->
             <ellipse cx="40" cy="68" rx="20" ry="4" fill="rgba(244,114,182,0.15)"/>
- 
+
             <!-- Body -->
             <ellipse cx="40" cy="44" rx="26" ry="22" fill="url(#bodyG)"/>
- 
+
             <!-- Left ear -->
             <ellipse cx="17" cy="28" rx="7" ry="9" fill="#f472b6"/>
             <ellipse cx="17" cy="29" rx="4" ry="6" fill="#fda4c8"/>
- 
+
             <!-- Right ear -->
             <ellipse cx="63" cy="28" rx="7" ry="9" fill="#f472b6"/>
             <ellipse cx="63" cy="29" rx="4" ry="6" fill="#fda4c8"/>
- 
+
             <!-- Coin slot on top -->
             <rect x="33" y="22" width="14" height="4" rx="2" fill="#db2777" opacity="0.6"/>
- 
+
             <!-- Left eye -->
             <circle cx="31" cy="37" r="4.5" fill="white"/>
             <circle cx="31" cy="37" r="2.8" fill="#1e3a5f"/>
             <circle cx="32.2" cy="35.8" r="1" fill="white"/>
- 
+
             <!-- Right eye -->
             <circle cx="49" cy="37" r="4.5" fill="white"/>
             <circle cx="49" cy="37" r="2.8" fill="#1e3a5f"/>
             <circle cx="50.2" cy="35.8" r="1" fill="white"/>
- 
+
             <!-- Snout -->
             <ellipse cx="40" cy="50" rx="10" ry="8" fill="url(#snoutG)" stroke="#f472b6" stroke-width="1"/>
             <circle cx="36.5" cy="50" r="2.2" fill="#db2777" opacity="0.7"/>
             <circle cx="43.5" cy="50" r="2.2" fill="#db2777" opacity="0.7"/>
- 
+
             <!-- Smile -->
             <path d="M34 55 Q40 59 46 55" stroke="#db2777" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.6"/>
- 
+
             <!-- Legs -->
             <rect x="24" y="61" width="9" height="10" rx="4.5" fill="#f472b6"/>
             <rect x="35" y="62" width="9" height="9"  rx="4.5" fill="#f472b6"/>
             <rect x="46" y="61" width="9" height="10" rx="4.5" fill="#f472b6"/>
- 
+
             <!-- Tail -->
             <path d="M15 48 Q7 43 9 35 Q11 27 17 31" stroke="#f472b6" stroke-width="2.5" stroke-linecap="round" fill="none"/>
- 
+
             <!-- Coin floating -->
             <circle cx="62" cy="18" r="10" fill="#fbbf24" stroke="#f59e0b" stroke-width="2"/>
             <text x="62" y="22.5" text-anchor="middle" font-size="11" font-weight="bold" fill="#92400e" font-family="Arial">฿</text>
@@ -789,16 +789,16 @@
         <h1>Debt Track</h1>
         <p>บันทึกและติดตามการจ่ายหนี้</p>
       </header>
- 
+
       <!-- หน้าบันทึก -->
       <div id="page-input" class="page">
         <div class="card">
- 
+
           <div class="field-group">
             <label class="field-label">📅 วันที่บันทึก</label>
             <input type="date" id="debt-date" class="premium-input" />
           </div>
- 
+
           <div class="field-group">
             <label class="field-label">📝 รายการหนี้</label>
             <div class="select-wrap">
@@ -826,12 +826,12 @@
             </div>
             <input type="text" id="debt-name-other" class="premium-input hidden" style="margin-top:10px;" placeholder="ระบุชื่อรายการ..." />
           </div>
- 
+
           <div class="field-group">
             <label class="field-label green">💵 ยอดจ่ายครั้งนี้</label>
             <input type="number" id="paid-amount" class="premium-input amount-input" placeholder="0" inputmode="decimal" />
           </div>
- 
+
           <div class="field-group">
             <label class="field-label">🏦 ช่องทางจ่าย</label>
             <div class="select-wrap">
@@ -850,17 +850,17 @@
             </div>
             <input type="text" id="source-other" class="premium-input hidden" style="margin-top:10px;" placeholder="ระบุธนาคาร..." />
           </div>
- 
+
           <button onclick="saveData()" id="btnSave" class="btn-save">
             <i class="fa-solid fa-paper-plane" style="margin-right:8px;"></i> บันทึกรายการ
           </button>
         </div>
         <footer><p>© 2026 SUKANDAKIANGKAI</p></footer>
       </div>
- 
+
       <!-- หน้าสรุป -->
       <div id="page-summary" class="page hidden">
- 
+
         <div class="filter-wrap">
           <select id="debt-filter" onchange="calculateAndRender()" class="filter-select">
             <option value="all">📊 สรุปทั้งหมด</option>
@@ -882,13 +882,13 @@
             <option value="งวดรถvespa">งวดรถ Vespa</option>
           </select>
         </div>
- 
+
         <div class="hero-card">
           <p class="hero-label" id="label-total">ยอดรวมที่จ่ายไปทั้งหมด</p>
           <div class="hero-amount" id="totalPaidBig">฿ 0</div>
           <span class="hero-count" id="countLabel">0 รายการ</span>
         </div>
- 
+
         <div class="stats-row">
           <div class="stat-card blue">
             <div class="stat-label">📅 เดือนนี้</div>
@@ -899,24 +899,24 @@
             <div class="stat-amount purple" id="paidThisYear">฿ 0</div>
           </div>
         </div>
- 
+
         <div class="section-divider"><span>ประวัติรายการ</span></div>
         <div id="debtHistory"></div>
- 
+
         <footer><p>© 2026 SUKANDAKIANGKAI</p></footer>
       </div>
     </div>
- 
+
     <!-- หน้าปฏิทิน -->
     <div id="page-calendar" class="page hidden" style="padding-top:0;">
- 
+
       <!-- Month nav -->
       <div class="cal-month-nav">
         <button onclick="prevMonth()" class="cal-nav-btn"><i class="fa-solid fa-chevron-left"></i></button>
         <span id="cal-month-label" class="cal-month-label"></span>
         <button onclick="nextMonth()" class="cal-nav-btn"><i class="fa-solid fa-chevron-right"></i></button>
       </div>
- 
+
       <!-- Summary strip -->
       <div class="cal-summary-strip">
         <div class="cal-strip-item">
@@ -929,7 +929,7 @@
           <span class="cal-strip-val green" id="cal-total">฿ 0</span>
         </div>
       </div>
- 
+
       <!-- Calendar grid -->
       <div class="cal-card">
         <div class="cal-weekdays">
@@ -937,19 +937,19 @@
         </div>
         <div id="cal-grid" class="cal-grid"></div>
       </div>
- 
+
       <!-- Day detail -->
       <div id="cal-detail" class="cal-detail hidden"></div>
- 
+
       <footer><p>© 2026 SUKANDAKIANGKAI</p></footer>
     </div>
- 
+
     <!-- Toast -->
     <div id="toast" class="toast">
       <div class="toast-icon"><i class="fa-solid fa-check"></i></div>
       <span>จดบันทึกสำเร็จ! สู้ๆ นะ 🐷</span>
     </div>
- 
+
     <!-- Modal แก้ไข -->
     <div id="editModal" class="modal-overlay hidden">
       <div class="modal-sheet">
@@ -974,7 +974,7 @@
         </div>
       </div>
     </div>
- 
+
     <!-- Navbar -->
     <nav class="navbar">
       <div class="navbar-inner">
@@ -992,17 +992,17 @@
         </button>
       </div>
     </nav>
- 
+
     <script>
       const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz9pBSfaJGM744SLru6Qb9nWaTXv_w2jRWTlAImw66FL45nkbwrRxxPfmhfKCD-2Ay_/exec";
       let allHistoryData = [];
- 
+
       function initApp() {
         const now = new Date();
         document.getElementById("debt-date").value = now.toISOString().split("T")[0];
         updateDashboard();
       }
- 
+
       function switchPage(page) {
         ["input","summary","calendar"].forEach(p => {
           document.getElementById("page-"+p).classList.toggle("hidden", page !== p);
@@ -1011,19 +1011,19 @@
         if (page === "summary") updateDashboard();
         if (page === "calendar") renderCalendar();
       }
- 
+
       function handleDebtSelection() {
         const val = document.getElementById("debt-name-select").value;
         const other = document.getElementById("debt-name-other");
         val === "อื่นๆ" ? (other.classList.remove("hidden"), other.focus()) : other.classList.add("hidden");
       }
- 
+
       function toggleOtherSource() {
         const val = document.getElementById("source-select").value;
         const other = document.getElementById("source-other");
         val === "อื่นๆ" ? (other.classList.remove("hidden"), other.focus()) : other.classList.add("hidden");
       }
- 
+
       function showSkeleton() {
         const list = document.getElementById("debtHistory");
         list.innerHTML = `<div class="skeleton-wrap">` + Array(4).fill(`
@@ -1039,7 +1039,7 @@
             </div>
           </div>`).join("") + `</div>`;
       }
- 
+
       function getBadgeClass(name) {
         if (/ประกัน/.test(name))           return "badge-orange";
         if (/ค่าน้ำ|น้ำ/.test(name))       return "badge-blue";
@@ -1050,7 +1050,7 @@
         if (/ออมสิน/.test(name))           return "badge-blue";
         return "badge-green";
       }
- 
+
       async function updateDashboard() {
         showSkeleton();
         try {
@@ -1060,23 +1060,23 @@
           calculateAndRender();
         } catch (e) { console.log("Fetch Error"); }
       }
- 
+
       function parseDate(dateStr) {
         if (!dateStr) return null;
         const parts = dateStr.split("/");
         if (parts.length !== 3) return null;
         return new Date(`20${parts[2]}-${parts[1]}-${parts[0]}`);
       }
- 
+
       function calculateAndRender() {
         const sel = document.getElementById("debt-filter").value;
         const now = new Date();
         const thisMonth = now.getMonth(), thisYear = now.getFullYear();
- 
+
         let filtered = sel === "all" ? allHistoryData : allHistoryData.filter(i => i.name.includes(sel));
- 
+
         document.getElementById("label-total").innerText = sel === "all" ? "ยอดรวมที่จ่ายไปทั้งหมด" : "ยอดรวมที่จ่าย: " + sel;
- 
+
         const totalPaid = filtered.reduce((s, i) => s + Number(i.paid || 0), 0);
         const paidThisMonth = filtered.reduce((s, i) => {
           const d = parseDate(i.date);
@@ -1086,14 +1086,14 @@
           const d = parseDate(i.date);
           return (d && d.getFullYear() === thisYear) ? s + Number(i.paid || 0) : s;
         }, 0);
- 
+
         document.getElementById("totalPaidBig").innerText = `฿ ${totalPaid.toLocaleString()}`;
         document.getElementById("countLabel").innerText = `${filtered.length} รายการ`;
         document.getElementById("paidThisMonth").innerText = `฿ ${paidThisMonth.toLocaleString()}`;
         document.getElementById("paidThisYear").innerText = `฿ ${paidThisYear.toLocaleString()}`;
         renderHistory(filtered);
       }
- 
+
       function renderHistory(history) {
         const list = document.getElementById("debtHistory");
         if (!history.length) {
@@ -1114,7 +1114,7 @@
           </div>
         `).join("");
       }
- 
+
       function openEdit(item) {
         document.getElementById("editRow").value = item.row;
         document.getElementById("editName").value = item.name;
@@ -1125,9 +1125,9 @@
         }
         document.getElementById("editModal").classList.remove("hidden");
       }
- 
+
       function closeEdit() { document.getElementById("editModal").classList.add("hidden"); }
- 
+
       async function submitEdit() {
         const payload = {
           action: "update",
@@ -1143,13 +1143,13 @@
           alert("แก้ไขข้อมูลเรียบร้อยแล้ว ✨");
         } catch (e) { alert("เกิดข้อผิดพลาด"); }
       }
- 
+
       async function deleteItem(row) {
         if (!confirm("ลบรายการนี้ใช่ไหม?")) return;
         await fetch(WEB_APP_URL, { method: "POST", body: JSON.stringify({ action: "delete", row }) });
         updateDashboard();
       }
- 
+
       async function saveData() {
         const btn = document.getElementById("btnSave");
         const select = document.getElementById("debt-name-select");
@@ -1166,10 +1166,10 @@
         };
         try {
           await fetch(WEB_APP_URL, { method: "POST", body: JSON.stringify(payload) });
- 
+
           alert("จดบันทึกสำเร็จ! สู้ๆ นะ 🐷");
           location.reload();
- 
+
         } catch (err) {
           alert("เกิดข้อผิดพลาด");
           btn.disabled = false;
@@ -1177,41 +1177,57 @@
           btn.innerHTML = `<i class="fa-solid fa-paper-plane" style="margin-right:8px;"></i> บันทึกรายการ`;
         }
       }
- 
+
       // ── CALENDAR JS ──
-      let calYear, calMonth;
- 
-      function renderCalendar() {
+      let calYear, calMonth, calCache = {}, calCurrentData = [];
+
+      async function fetchCalendarData(year, month) {
+        const key = `${year}-${month}`;
+        if (calCache[key]) return calCache[key];
+        try {
+          const res = await fetch(`${WEB_APP_URL}?action=getSummary`);
+          const data = await res.json();
+          // เก็บ allHistoryData ไว้ด้วย
+          allHistoryData = data.history || [];
+          calCache[key] = allHistoryData;
+          return allHistoryData;
+        } catch(e) { return []; }
+      }
+
+      async function renderCalendar() {
         const now = new Date();
         if (calYear === undefined) { calYear = now.getFullYear(); calMonth = now.getMonth(); }
- 
+
         const thMonths = ["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
         document.getElementById("cal-month-label").textContent = `${thMonths[calMonth]} ${calYear + 543}`;
- 
-        // Build day → items map
+
+        const historyData = await fetchCalendarData(calYear, calMonth);
+        calCurrentData = historyData;
+
+        // Build day → items map (filter เฉพาะเดือน+ปีที่เลือก)
         const dayMap = {};
-        allHistoryData.forEach(item => {
+        historyData.forEach(item => {
           const d = parseDate(item.date);
           if (!d || d.getFullYear() !== calYear || d.getMonth() !== calMonth) return;
           const day = d.getDate();
           if (!dayMap[day]) dayMap[day] = [];
           dayMap[day].push(item);
         });
- 
+
         // Summary strip
         let monthTotal = 0, monthCount = 0;
         Object.values(dayMap).forEach(arr => arr.forEach(i => { monthTotal += Number(i.paid||0); monthCount++; }));
         document.getElementById("cal-count").textContent = monthCount;
         document.getElementById("cal-total").textContent = "฿ " + monthTotal.toLocaleString();
- 
+
         // Grid
         const firstDay = new Date(calYear, calMonth, 1).getDay();
         const daysInMonth = new Date(calYear, calMonth+1, 0).getDate();
         const grid = document.getElementById("cal-grid");
         let html = "";
- 
+
         for (let i = 0; i < firstDay; i++) html += `<div class="cal-day empty"><span class="cal-day-num"></span></div>`;
- 
+
         for (let d = 1; d <= daysInMonth; d++) {
           const isToday = d === now.getDate() && calMonth === now.getMonth() && calYear === now.getFullYear();
           const items = dayMap[d] || [];
@@ -1225,12 +1241,9 @@
         grid.innerHTML = html;
         document.getElementById("cal-detail").classList.add("hidden");
       }
- 
+
       function showDayDetail(day) {
-        const d = new Date(calYear, calMonth, day);
-        const dateStr = String(day).padStart(2,"0") + "/" + String(calMonth+1).padStart(2,"0") + "/" + String(calYear).slice(2);
-        // match dd/mm/yy format in data
-        const items = allHistoryData.filter(i => {
+        const items = calCurrentData.filter(i => {
           const pd = parseDate(i.date);
           return pd && pd.getDate() === day && pd.getMonth() === calMonth && pd.getFullYear() === calYear;
         });
@@ -1246,7 +1259,7 @@
               <span class="cal-detail-amt">฿${Number(i.paid).toLocaleString()}</span>
             </div>`).join("")}`;
       }
- 
+
       function prevMonth() {
         calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; }
         renderCalendar();
@@ -1255,7 +1268,7 @@
         calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; }
         renderCalendar();
       }
- 
+
       window.onload = initApp;
     </script>
   </body>
